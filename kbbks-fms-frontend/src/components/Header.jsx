@@ -1,9 +1,9 @@
-function Header({ onLogout, currentRole }) {
+function Header({ onLogout, currentRole, userName }) {
   return (
     <div style={styles.header}>
       <h3>KBBKS – FMS</h3>
       <div style={styles.rightSection}>
-        <span>Role: {currentRole}</span>
+        <span style={styles.userInfo}>{userName} • {currentRole}</span>
         <button onClick={onLogout} style={styles.logoutButton}>Logout</button>
       </div>
     </div>
@@ -12,26 +12,38 @@ function Header({ onLogout, currentRole }) {
 
 const styles = {
   header: {
-    height: '60px',
-    backgroundColor: '#f2f2f2',
+    height: '70px',
+    backgroundColor: '#2c3e50',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '0 20px',
-    borderBottom: '1px solid #ccc',
+    padding: '0 30px',
+    borderBottom: '3px solid #3498db',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    color: '#ecf0f1',
   },
   rightSection: {
     display: 'flex',
     alignItems: 'center',
-    gap: '20px',
+    justifyContent: 'flex-end',
+    gap: '25px',
+    fontSize: '14px',
+    color: '#ecf0f1',
+  },
+  userInfo: {
+    fontSize: '14px',
+    color: '#ecf0f1',
+    fontWeight: '500',
   },
   logoutButton: {
-    padding: '5px 10px',
-    backgroundColor: '#dc3545',
+    padding: '8px 16px',
+    backgroundColor: '#e74c3c',
     color: 'white',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',
+    fontWeight: '500',
+    transition: 'background-color 0.3s ease',
   },
 }
 

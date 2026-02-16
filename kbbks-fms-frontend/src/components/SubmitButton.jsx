@@ -15,17 +15,21 @@ function SubmitButton({ loading, text, loadingText = 'Saving...', disabled }) {
 
 const styles = {
   button: {
-    padding: '10px 20px',
-    backgroundColor: '#007bff',
+    padding: '12px 24px',
+    backgroundColor: '#3498db',
     color: 'white',
     border: 'none',
-    borderRadius: '4px',
+    borderRadius: '6px',
     cursor: 'pointer',
-    fontSize: '14px',
+    fontSize: '15px',
+    fontWeight: '600',
+    transition: 'background-color 0.3s ease, transform 0.1s ease',
+    width: '100%',
   },
   disabled: {
-    backgroundColor: '#ccc',
+    backgroundColor: '#bdc3c7',
     cursor: 'not-allowed',
+    transform: 'none',
   },
 };
 

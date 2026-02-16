@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useAuth, AuthProvider } from './contexts/AuthContext'
+import { DataProvider } from './contexts/DataContext'
 import MainLayout from './layouts/MainLayout'
 import Dashboard from './pages/Dashboard'
 import VendorMaster from './pages/VendorMaster'
@@ -6,16 +8,12 @@ import ExpenseEntry from './pages/ExpenseEntry'
 import PaymentEntry from './pages/PaymentEntry'
 import Login from './pages/Login'
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+function AppContent() {
+  const { isAuthenticated, user, loading, logout } = useAuth()
   const [page, setPage] = useState('dashboard')
 
-  function handleLogin() {
-    setIsAuthenticated(true)
-  }
-
-  function handleLogout() {
-    setIsAuthenticated(false)
+  if (loading) {
+    return <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div>
   }
 
   function renderPage() {
@@ -26,13 +24,27 @@ function App() {
   }
 
   if (!isAuthenticated) {
-    return <Login onLogin={handleLogin} />
+    return <Login />
   }
 
   return (
-    <MainLayout setPage={setPage} onLogout={handleLogout}>
-      {renderPage()}
-    </MainLayout>
+    <DataProvider>
+      <MainLayout
+        setPage={setPage}
+        onLogout={logout}
+        user={user}
+      >
+        {renderPage()}
+      </MainLayout>
+    </DataProvider>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   )
 }
 

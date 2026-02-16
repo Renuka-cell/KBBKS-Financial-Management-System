@@ -1,4 +1,4 @@
-function FormInput({ label, type = 'text', name, value, onChange, error, placeholder, options = [] }) {
+function FormInput({ label, type = 'text', name, value, onChange, error, placeholder, options = [], step, min, max }) {
   return (
     <div style={styles.inputGroup}>
       <label style={styles.label}>{label}</label>
@@ -22,6 +22,9 @@ function FormInput({ label, type = 'text', name, value, onChange, error, placeho
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          step={step}
+          min={min}
+          max={max}
           style={styles.input}
         />
       )}
@@ -34,21 +37,28 @@ const styles = {
   inputGroup: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '5px',
+    gap: '8px',
   },
   label: {
-    fontWeight: 'bold',
+    fontWeight: '600',
+    fontSize: '14px',
+    color: '#2c3e50',
+    textAlign: 'left',
   },
   input: {
-    padding: '8px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
+    padding: '11px 12px',
+    border: '1px solid #bdc3c7',
+    borderRadius: '6px',
     fontSize: '14px',
+    fontFamily: 'inherit',
+    backgroundColor: '#fff',
+    transition: 'border-color 0.2s ease',
   },
   error: {
-    color: 'red',
+    color: '#e74c3c',
     fontSize: '12px',
-    margin: 0,
+    margin: '0',
+    fontWeight: '500',
   },
 };
 

@@ -8,10 +8,15 @@ function Footer() {
 
 const styles = {
   footer: {
-    height: '40px',
-    textAlign: 'center',
-    borderTop: '1px solid #ccc',
-    paddingTop: '10px',
+    height: '50px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#2c3e50',
+    color: '#ecf0f1',
+    borderTop: '3px solid #3498db',
+    fontSize: '13px',
+    fontWeight: '500',
   },
 }
 

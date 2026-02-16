@@ -1,19 +1,23 @@
 import Header from '../components/Header'
 import Sidebar from '../components/Sidebar'
 import Footer from '../components/Footer'
+import { useAuth } from '../contexts/AuthContext'
 
 function MainLayout({ children, setPage, onLogout }) {
-  // Static role for now - can be replaced with authentication later
+  const { user } = useAuth()
+  
   const ROLES = {
-    ADMIN: 'ADMIN',
-    USER: 'USER',
-    VIEWER: 'VIEWER'
-  };
-  const currentRole = ROLES.VIEWER; // Static role - change to USER or VIEWER to test
+    ADMIN: 'Admin',
+    ACCOUNTANT: 'Accountant',
+    USER: 'User',
+    VIEWER: 'Viewer'
+  }
+  
+  const currentRole = user?.role || ROLES.USER
 
   return (
     <div style={styles.container}>
-      <Header onLogout={onLogout} currentRole={currentRole} />
+      <Header onLogout={onLogout} currentRole={currentRole} userName={user?.name} />
       <div style={styles.body}>
         <Sidebar setPage={setPage} currentRole={currentRole} />
         <div style={styles.content}>{children}</div>
@@ -28,6 +32,7 @@ const styles = {
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: '#f8f9fa',
   },
   body: {
     display: 'flex',
@@ -35,7 +40,8 @@ const styles = {
   },
   content: {
     flex: 1,
-    padding: '20px',
+    padding: '30px 35px',
+    overflow: 'auto',
   },
 }
 
