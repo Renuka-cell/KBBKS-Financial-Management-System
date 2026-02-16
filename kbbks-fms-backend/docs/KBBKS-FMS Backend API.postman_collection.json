@@ -1,0 +1,945 @@
+{
+  "info": {
+    "_postman_id": "ad5e2642-df31-442b-9c12-90a7d172ff62",
+    "name": "KBBKS-FMS Backend API",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52186878",
+    "_collection_link": "https://go.postman.co/collection/52186878-ad5e2642-df31-442b-9c12-90a7d172ff62?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        },
+        "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+      },
+      "response": []
+    },
+    {
+      "name": "Post data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Successful POST request\", function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+              "});",
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": ""
+        },
+        "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+      },
+      "response": []
+    },
+    {
+      "name": "Auth_Register_Account",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Auth_login_admin",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Auth_login_Account",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Auth_login_viewer",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Viewer_payment_create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"bill_id\" : 1,\r\n    \"amount_paid\" : 2000,\r\n    \"payment_date\" : \"2023-04-01\",\r\n    \"payment_mode\" : \"Cash\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/payments/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "payments",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Accountant_payment_create",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Admin_payment_create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"bill_id\" : 1,\r\n    \"amount_paid\" : 5000,\r\n    \"payment_date\" : \"2023-04-03\",\r\n    \"payment_mode\" : \"UPI\"\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/payments/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "payments",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Viewer_vendor_outstanding",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Accountant_Vendor_outstanding",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/reports/vendor-outstanding",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "reports",
+            "vendor-outstanding"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin_vendor_outstanding",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Viewer_bills_create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_id\" : 17,\r\n    \"bill_number\" : \"BILL-002\",\r\n    \"bill_date\": \"2023-04-01\",\r\n    \"bill_amount\": 1000\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/bills/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "bills",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Accountant_bills_create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_id\" : 11,\r\n    \"bill_number\" : \"BILL-0010\",\r\n    \"bill_date\": \"2023-04-04\",\r\n    \"bill_amount\": 10070\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/bills/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "bills",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin_bills_create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_id\" : 19,\r\n    \"bill_number\" : \"BILL-111\",\r\n    \"bill_date\": \"2024-10-04\",\r\n    \"bill_amount\": 10990\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/bills/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "bills",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin_expense_create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_id\" : 21,\r\n    \"amount\" : 30000,\r\n    \"category\" : \"classes\",\r\n    \"expense_date\" : \"2025-05-28\",\r\n    \"description\": \"Annual classes for kids\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/expenses/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "expenses",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Accountant_expense_create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_id\" : 21,\r\n    \"amount\": 100,\r\n    \"category\" : \"Travel\",\r\n    \"expense_date\": \"2023-04-01\",\r\n    \"description\" : \"Travel expenses for April 2023\"\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/expenses/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "expenses",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Viewer_expense_create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_id\" : 21,\r\n    \"amount\": 1200,\r\n    \"category\" : \"Travel\",\r\n    \"expense_date\": \"2025-04-06\",\r\n    \"description\" : \"Travel expenses for April 2025\"\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/expenses/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "expenses",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "vendor_list",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Admin_create_vendor",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_name\" : \"Aastha classes\",\r\n    \"contact_person\" : \"Balaji\",\r\n    \"phone\" : \"9876543210\",\r\n    \"email\": \"balaji@gmail.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/vendors/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "vendors",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin_update_vendor",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_name\" : \"ABC book stores\",\r\n    \"contact_person\": \"John Doe\",\r\n    \"phone\" : 5555555555,\r\n    \"email\" : \"johndoe@abcbookstores.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/vendors/update/3",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "vendors",
+            "update",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin_delete_vendor",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/vendors/delete/6",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "vendors",
+            "delete",
+            "6"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Accountant_create_vendor",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_name\" : \"Podar entriprises\",\r\n    \"contact_person\" : \"Ranjana\",\r\n    \"phone\" : \"9876543211\",\r\n    \"email\": \"ranjana@gmail.com\"\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/vendors/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "vendors",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Accountant_update_vendor",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_name\" : \"Ranjana enterprise\",\r\n    \"contact_person\": \"Ranjana\",\r\n    \"phone\" : 5555558888,\r\n    \"email\" : \"abc@abcbookstores.com\"\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/vendors/update/19",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "vendors",
+            "update",
+            "19"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Accountant_delete_vendor",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Viewer_create_vendor",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_name\" : \"Podar pvt ltd.\",\r\n    \"contact_person\" : \"Devi\",\r\n    \"phone\" : \"9434343628\",\r\n    \"email\": \"ranjana@gmail.com\"\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/vendors/create",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "vendors",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Viewer_update_vendor",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_name\" : \"QWE pvt ltd.\",\r\n    \"contact_person\" : \"Ram\",\r\n    \"phone\" : \"9767688119\",\r\n    \"email\": \"ram@gmail.com\"\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/vendors/update/12",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "vendors",
+            "update",
+            "12"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Viewer_delete_vendor",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"vendor_name\" : \"QWE pvt ltd.\",\r\n    \"contact_person\" : \"Ram\",\r\n    \"phone\" : \"9767688119\",\r\n    \"email\": \"ram@gmail.com\"\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/vendors/delete/3",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "vendors",
+            "delete",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin_monthly_expense",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/reports/monthly-expense",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "reports",
+            "monthly-expense"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Admin_income_expense",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Accountant_monthly_expense",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Accountant_income_expense",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Viewer_monthly_expense",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Role",
+            "value": "Viewer",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/reports/monthly-expense",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "reports",
+            "monthly-expense"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Viewer_income_expense",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Role",
+            "value": "Viewer",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/reports/income-expense",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "reports",
+            "income-expense"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
