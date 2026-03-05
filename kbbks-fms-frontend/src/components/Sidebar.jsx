@@ -1,4 +1,8 @@
+import { useDarkMode } from '../contexts/DarkModeContext'
+
 function Sidebar({ setPage, currentRole }) {
+  const { isDarkMode } = useDarkMode()
+
   const ROLES = {
     ADMIN: 'Admin',
     ACCOUNTANT: 'Accountant',
@@ -14,12 +18,12 @@ function Sidebar({ setPage, currentRole }) {
   ]
 
   return (
-    <div style={styles.sidebar}>
+    <div style={isDarkMode ? styles.sidebarDark : styles.sidebar}>
       <ul style={styles.menu}>
         {menuItems
           .filter(item => item.roles.includes(currentRole))
           .map(item => (
-            <li key={item.page} onClick={() => setPage(item.page)} style={styles.menuItem}>
+            <li key={item.page} onClick={() => setPage(item.page)} style={isDarkMode ? styles.menuItemDark : styles.menuItem}>
               {item.label}
             </li>
           ))}
@@ -30,31 +34,54 @@ function Sidebar({ setPage, currentRole }) {
 
 const styles = {
   sidebar: {
-    width: '250px',
-    backgroundColor: '#ecf0f1',
-    padding: '25px 0',
+    width: '260px',
+    backgroundColor: '#ffffff',
+    padding: '30px 0',
     cursor: 'pointer',
-    borderRight: '2px solid #bdc3c7',
-    minHeight: 'calc(100vh - 70px)',
+    borderRight: '1px solid #e8e8e8',
+    minHeight: 'calc(100vh - 75px)',
+    boxShadow: '2px 0 8px rgba(0, 0, 0, 0.05)',
+  },
+  sidebarDark: {
+    width: '260px',
+    backgroundColor: '#2d2d2d',
+    padding: '30px 0',
+    cursor: 'pointer',
+    borderRight: '1px solid #444444',
+    minHeight: 'calc(100vh - 75px)',
+    boxShadow: '2px 0 8px rgba(0, 0, 0, 0.2)',
   },
   menu: {
     listStyle: 'none',
     padding: '0 15px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '8px',
+    gap: '10px',
     margin: 0,
   },
   menuItem: {
     padding: '12px 16px',
-    backgroundColor: '#fff',
-    borderRadius: '6px',
+    backgroundColor: '#f8f9fa',
+    borderRadius: '8px',
     cursor: 'pointer',
     transition: 'all 0.2s ease',
     fontSize: '15px',
-    fontWeight: '500',
+    fontWeight: '600',
     textAlign: 'left',
-    border: '1px solid transparent',
+    border: '2px solid transparent',
+    color: '#2c3e50',
+  },
+  menuItemDark: {
+    padding: '12px 16px',
+    backgroundColor: '#3a3a3a',
+    color: '#e0e0e0',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    fontSize: '15px',
+    fontWeight: '600',
+    textAlign: 'left',
+    border: '2px solid transparent',
   }
 }
 

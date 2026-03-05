@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { getVendors } from '../services/vendor.service'
 import { getBills } from '../services/bill.service'
+import defaultAvatar from '../pictures/avatardefault_92824.png'
 
 const DataContext = createContext()
 
@@ -23,7 +24,15 @@ export function DataProvider({ children }) {
     try {
       const response = await getVendors()
       const vendorsArray = response?.data?.data ?? response?.data ?? response
-      setVendors(Array.isArray(vendorsArray) ? vendorsArray : [])
+      const finalVendors = (Array.isArray(vendorsArray) ? vendorsArray : []).map((v) => {
+        const logo = v.logo || ''
+        const isBackendDefault = typeof logo === 'string' && logo.includes('/uploads/vendor_logos/default.png')
+        return {
+          ...v,
+          logo: isBackendDefault ? defaultAvatar : logo,
+        }
+      })
+      setVendors(finalVendors)
     } catch (err) {
       const errorMsg = err.response?.data?.message || err.message || 'Failed to load vendors'
       setVendorError(errorMsg)
@@ -33,15 +42,21 @@ export function DataProvider({ children }) {
     }
   }
 
-  const fetchBills = async () => {
-    if (bills.length > 0) return // Use cache if already loaded
-    
+  const fetchBills = async (options = {}) => {
     setLoadingBills(true)
     setBillError(null)
     try {
-      const response = await getBills()
+      const params = options?.pendingOnly ? { pending: 1 } : undefined
+      const response = await getBills(params)
       const billsArray = response?.data?.data ?? response?.data ?? response
-      setBills(Array.isArray(billsArray) ? billsArray : [])
+      const apiBase = import.meta.env.VITE_API_URL || '';
+      const preparedBills = Array.isArray(billsArray) ? billsArray : [];
+      preparedBills.forEach(b => {
+        if (b.vendor_logo && !b.vendor_logo.match(/^https?:\/\//)) {
+          b.vendor_logo = apiBase.replace(/\/?$/, '') + '/' + b.vendor_logo.replace(/^\//, '');
+        }
+      });
+      setBills(preparedBills)
     } catch (err) {
       const errorMsg = err.response?.data?.message || err.message || 'Failed to load bills'
       setBillError(errorMsg)

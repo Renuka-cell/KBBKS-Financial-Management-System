@@ -23,10 +23,15 @@ class VendorController extends BaseController
         }
 
         $model = new VendorModel();
-
+        $vendors = $model->findAll();
+        foreach ($vendors as &$v) {
+            if (empty($v['logo'])) {
+                $v['logo'] = 'uploads/vendor_logos/default.png';
+            }
+        }
         return $this->response->setJSON([
             'status' => true,
-            'data'   => $model->findAll()
+            'data'   => $vendors
         ]);
     }
 
@@ -41,14 +46,15 @@ class VendorController extends BaseController
 
         $model = new VendorModel();
         $vendor = $model->find($id);
-
         if (!$vendor) {
             return $this->response->setStatusCode(404)->setJSON([
                 'status'  => false,
                 'message' => 'Vendor not found'
             ]);
         }
-
+        if (empty($vendor['logo'])) {
+            $vendor['logo'] = 'uploads/vendor_logos/default.png';
+        }
         return $this->response->setJSON([
             'status' => true,
             'data'   => $vendor
@@ -71,7 +77,19 @@ class VendorController extends BaseController
             ]);
         }
 
-        $data = $this->request->getJSON(true);
+        $data = $this->request->getPost();
+        $logoFile = $this->request->getFile('logo');
+        if ($logoFile && $logoFile->isValid() && !$logoFile->hasMoved()) {
+            $newName = uniqid('logo_') . '.' . $logoFile->getExtension();
+            $uploadPath = FCPATH . 'uploads/vendor_logos/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+            $logoFile->move($uploadPath, $newName);
+            $data['logo'] = 'uploads/vendor_logos/' . $newName;
+        } else {
+            $data['logo'] = 'uploads/vendor_logos/default.png';
+        }
 
         if (empty($data['vendor_name'])) {
             return $this->response->setStatusCode(400)->setJSON([
@@ -92,7 +110,8 @@ class VendorController extends BaseController
         return $this->response->setJSON([
             'status'    => true,
             'message'   => 'Vendor created successfully',
-            'vendor_id' => $model->getInsertID()
+            'vendor_id' => $model->getInsertID(),
+            'logo'      => $data['logo']
         ]);
     }
 
@@ -112,13 +131,16 @@ class VendorController extends BaseController
             ]);
         }
 
-        $data = $this->request->getJSON(true);
-
-        if (empty($data)) {
-            return $this->response->setStatusCode(400)->setJSON([
-                'status'  => false,
-                'message' => 'No data provided to update'
-            ]);
+        $data = $this->request->getPost();
+        $logoFile = $this->request->getFile('logo');
+        if ($logoFile && $logoFile->isValid() && !$logoFile->hasMoved()) {
+            $newName = uniqid('logo_') . '.' . $logoFile->getExtension();
+            $uploadPath = FCPATH . 'uploads/vendor_logos/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+            $logoFile->move($uploadPath, $newName);
+            $data['logo'] = 'uploads/vendor_logos/' . $newName;
         }
 
         $model = new VendorModel();
@@ -139,7 +161,8 @@ class VendorController extends BaseController
 
         return $this->response->setJSON([
             'status'  => true,
-            'message' => 'Vendor updated successfully'
+            'message' => 'Vendor updated successfully',
+            'logo'    => isset($data['logo']) ? $data['logo'] : null
         ]);
     }
 

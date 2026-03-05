@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import FormInput from '../components/FormInput';
+import LogoSelect from '../components/LogoSelect';
 import SubmitButton from '../components/SubmitButton';
 import { addPayment } from '../services/payment.service';
 import { useData } from '../contexts/DataContext';
+import { useDarkMode } from '../contexts/DarkModeContext';
 
 function PaymentEntry() {
   const { bills, loadingBills, billError, fetchBills } = useData();
+  const { isDarkMode } = useDarkMode();
   const [formData, setFormData] = useState({
     bill_id: '',
     amount_paid: '',
     payment_date: '',
     payment_mode: '',
+    reference_no: '',
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -34,7 +38,7 @@ function PaymentEntry() {
   }, [error]);
 
   useEffect(() => {
-    fetchBills();
+    fetchBills({ pendingOnly: true });
   }, []);
 
   const validateFields = () => {
@@ -87,6 +91,7 @@ function PaymentEntry() {
         amount_paid: parseFloat(formData.amount_paid),
         payment_date: formData.payment_date,
         payment_mode: formData.payment_mode,
+        reference_no: formData.reference_no || null,
       });
 
       setSuccess('Payment saved successfully!');
@@ -95,10 +100,11 @@ function PaymentEntry() {
         amount_paid: '',
         payment_date: '',
         payment_mode: '',
+        reference_no: '',
       });
       setErrors({});
       // Refresh bills list
-      fetchBills();
+      fetchBills({ pendingOnly: true });
     } catch (err) {
       const errorMsg = err.response?.data?.message || err.message || 'Failed to save payment. Please try again.';
       setError(errorMsg);
@@ -108,48 +114,59 @@ function PaymentEntry() {
   };
 
   const billOptions = [
-    { value: '', label: 'Select Bill' },
-    ...bills.map(b => ({ value: b.bill_id, label: `Bill #${b.bill_number} - ₹${b.bill_amount}` }))
+    { value: '', label: 'Select Bill', logo: null },
+    ...bills.map(b => ({ value: b.bill_id, label: `Bill #${b.bill_number} - ₹${b.bill_amount}`, logo: b.vendor_logo }))
   ];
 
+  const logoStyles = {
+    logoPreviewWrapper: {
+      marginTop: '8px',
+    },
+    logoPreview: {
+      width: '40px',
+      height: '40px',
+      objectFit: 'cover',
+      borderRadius: '4px',
+      border: '1px solid #ccc'
+    }
+  };
+
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
+    <div style={isDarkMode ? styles.containerDark : styles.container}>
+      <div style={isDarkMode ? styles.headerDark : styles.header}>
         <h2>Payment Entry</h2>
       </div>
 
       {/* Messages */}
       {error && (
-        <div style={styles.errorAlert}>
+        <div style={isDarkMode ? styles.errorAlertDark : styles.errorAlert}>
           <strong>Error:</strong> {error}
           <button onClick={() => setError(null)} style={styles.closeBtn}>✕</button>
         </div>
       )}
       {success && (
-        <div style={styles.successAlert}>
+        <div style={isDarkMode ? styles.successAlertDark : styles.successAlert}>
           <strong>Success:</strong> {success}
           <button onClick={() => setSuccess(null)} style={styles.closeBtn}>✕</button>
         </div>
       )}
 
       {/* Form */}
-      <form style={styles.form} onSubmit={handleSubmit}>
+      <form style={isDarkMode ? styles.formDark : styles.form} onSubmit={handleSubmit}>
         <h3>Record Payment</h3>
 
         {loadingBills ? (
-          <div style={styles.loadingField}>
-            <div style={styles.spinner}></div>
+          <div style={isDarkMode ? styles.loadingFieldDark : styles.loadingField}>
+            <div style={isDarkMode ? styles.spinnerDark : styles.spinner}></div>
             <span>Loading bills...</span>
           </div>
         ) : (
-          <FormInput
-            label="Bill Reference *"
-            type="select"
+          <LogoSelect
             name="bill_id"
             value={formData.bill_id}
             onChange={handleChange}
-            error={errors.bill_id}
             options={billOptions}
+            placeholder="Select Bill"
           />
         )}
 
@@ -164,9 +181,22 @@ function PaymentEntry() {
             { value: '', label: 'Select Mode' },
             { value: 'Cash', label: 'Cash' },
             { value: 'Cheque', label: 'Cheque' },
-            { value: 'NEFT', label: 'NEFT / Bank Transfer' }
+            { value: 'NEFT', label: 'NEFT / Bank Transfer' },
+            { value: 'UPI', label: 'UPI Payment' },
           ]}
         />
+
+        {(formData.payment_mode === 'Cheque' || formData.payment_mode === 'NEFT' || formData.payment_mode === 'UPI') && (
+          <FormInput
+            label="Reference No."
+            type="text"
+            name="reference_no"
+            value={formData.reference_no}
+            onChange={handleChange}
+            error={errors.reference_no}
+            placeholder="Cheque / UTR / Transaction reference"
+          />
+        )}
 
         <FormInput
           label="Payment Date *"
@@ -208,39 +238,84 @@ const styles = {
     maxWidth: '100%',
     margin: '0',
   },
+  containerDark: {
+    padding: '0',
+    backgroundColor: 'transparent',
+    borderRadius: '0',
+    maxWidth: '100%',
+    margin: '0',
+  },
   header: {
-    marginBottom: '25px',
-    paddingBottom: '15px',
-    borderBottom: '2px solid #3498db',
+    marginBottom: '30px',
+    paddingBottom: '20px',
+    borderBottom: 'none',
+  },
+  headerDark: {
+    marginBottom: '30px',
+    paddingBottom: '20px',
+    borderBottom: 'none',
+    color: '#e0e0e0',
   },
   errorAlert: {
-    backgroundColor: '#f8d7da',
-    border: '1px solid #f5c6cb',
-    color: '#721c24',
-    padding: '14px 20px',
-    borderRadius: '6px',
+    backgroundColor: '#fee',
+    border: 'none',
+    borderLeft: '5px solid #e74c3c',
+    color: '#c0392b',
+    padding: '16px 20px',
+    borderRadius: '8px',
     marginBottom: '20px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     fontSize: '14px',
+    animation: 'slideIn 0.3s ease',
+  },
+  errorAlertDark: {
+    backgroundColor: '#3a1f1f',
+    border: 'none',
+    borderLeft: '5px solid #e74c3c',
+    color: '#ff9a9a',
+    padding: '16px 20px',
+    borderRadius: '8px',
+    marginBottom: '20px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontSize: '14px',
+    animation: 'slideIn 0.3s ease',
   },
   successAlert: {
-    backgroundColor: '#d4edda',
-    border: '1px solid #c3e6cb',
-    color: '#155724',
-    padding: '14px 20px',
-    borderRadius: '6px',
+    backgroundColor: '#efe',
+    border: 'none',
+    borderLeft: '5px solid #27ae60',
+    color: '#1e8449',
+    padding: '16px 20px',
+    borderRadius: '8px',
     marginBottom: '20px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
     fontSize: '14px',
+    animation: 'slideIn 0.3s ease',
+  },
+  successAlertDark: {
+    backgroundColor: '#1f3a1f',
+    border: 'none',
+    borderLeft: '5px solid #27ae60',
+    color: '#7aff7a',
+    padding: '16px 20px',
+    borderRadius: '8px',
+    marginBottom: '20px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontSize: '14px',
+    animation: 'slideIn 0.3s ease',
   },
   closeBtn: {
     backgroundColor: 'transparent',
     border: 'none',
-    fontSize: '18px',
+    fontSize: '20px',
     cursor: 'pointer',
     color: 'inherit',
     padding: '0 5px',
@@ -248,30 +323,70 @@ const styles = {
   },
   form: {
     backgroundColor: 'white',
-    padding: '25px',
-    borderRadius: '8px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+    padding: '30px',
+    borderRadius: '12px',
+    boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
+    gap: '20px',
+  },
+  formDark: {
+    backgroundColor: '#2d2d2d',
+    color: '#e0e0e0',
+    padding: '30px',
+    borderRadius: '12px',
+    boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
   },
   loadingField: {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
-    padding: '12px 15px',
-    backgroundColor: '#ecf0f1',
-    borderRadius: '6px',
+    padding: '14px 18px',
+    backgroundColor: '#f8f9fa',
+    borderRadius: '8px',
     color: '#2c3e50',
     fontSize: '14px',
+    border: '2px solid #e8e8e8',
+  },
+  loadingFieldDark: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '14px 18px',
+    backgroundColor: '#3a3a3a',
+    borderRadius: '8px',
+    color: '#e0e0e0',
+    fontSize: '14px',
+    border: '2px solid #555555',
   },
   spinner: {
-    border: '3px solid #ecf0f1',
-    borderTop: '3px solid #3498db',
+    border: '3px solid #e8e8e8',
+    borderTop: '3px solid #3b82f6',
     borderRadius: '50%',
-    width: '22px',
-    height: '22px',
+    width: '24px',
+    height: '24px',
     animation: 'spin 1s linear infinite',
+  },
+  spinnerDark: {
+    border: '3px solid #555555',
+    borderTop: '3px solid #3b82f6',
+    borderRadius: '50%',
+    width: '24px',
+    height: '24px',
+    animation: 'spin 1s linear infinite',
+  },
+  logoPreviewWrapper: {
+    marginTop: '8px',
+  },
+  logoPreview: {
+    width: '40px',
+    height: '40px',
+    objectFit: 'cover',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
   },
 }
 

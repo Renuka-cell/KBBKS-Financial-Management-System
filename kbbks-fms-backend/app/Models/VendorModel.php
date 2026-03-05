@@ -17,7 +17,8 @@ class VendorModel extends Model
         'vendor_name',
         'contact_person',
         'phone',
-        'email'
+        'email',
+        'logo',
     ];
 
     // IMPORTANT: Disable timestamps (fixes 500 error)
@@ -27,7 +28,8 @@ class VendorModel extends Model
     protected $validationRules = [
         'vendor_name' => 'required|min_length[3]',
         'phone'       => 'permit_empty|numeric|min_length[10]|max_length[15]',
-        'email'       => 'permit_empty|valid_email'
+        'email'       => 'permit_empty|valid_email',
+        'logo'        => 'permit_empty|max_length[255]',
     ];
 
     protected $validationMessages = [

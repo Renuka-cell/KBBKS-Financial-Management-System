@@ -1,7 +1,21 @@
 import http from "./http";
 
-export const getExpenses = () => http.get("/expenses");
-export const addExpense = (data) => http.post("/expenses", data);
-export const editExpense = (id, data) => http.put(`/expenses/${id}`, data);
-export const getExpense = (id) => http.get(`/expenses/${id}`);
-export const deleteExpense = (id) => http.delete(`/expenses/${id}`);
+export const addExpense = (data, billFile) => {
+  // If we have a bill file, send multipart/form-data
+  if (billFile) {
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, value);
+      }
+    });
+    formData.append("bill_file", billFile);
+
+    return http.post("/expenses/create", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
+
+  // Fallback: JSON request (no file)
+  return http.post("/expenses/create", data);
+};
