@@ -231,7 +231,7 @@ class ReportController extends BaseController
 
     /**
      * GET /reports/dashboard-summary
-     * Roles: Admin, Accountant
+     * Roles: Admin, Accountant, Viewer
      */
     public function dashboardSummary()
     {
@@ -242,10 +242,10 @@ class ReportController extends BaseController
             ]);
         }
 
-        if (!$this->checkRole(['Admin', 'Accountant'])) {
+        if (!$this->checkRole(['Admin', 'Accountant', 'Viewer'])) {
             return $this->response->setStatusCode(403)->setJSON([
                 'status' => false,
-                'message' => 'Only Admin and Accountant can access dashboard summary'
+                'message' => 'Only Admin, Accountant or Viewer can access dashboard summary'
             ]);
         }
 
@@ -260,7 +260,7 @@ class ReportController extends BaseController
 
     /**
      * GET /reports/dashboard-trend
-     * Roles: Admin, Accountant
+     * Roles: Admin, Accountant, Viewer
      */
     public function dashboardTrend()
     {
@@ -271,10 +271,10 @@ class ReportController extends BaseController
             ]);
         }
 
-        if (!$this->checkRole(['Admin', 'Accountant'])) {
+        if (!$this->checkRole(['Admin', 'Accountant', 'Viewer'])) {
             return $this->response->setStatusCode(403)->setJSON([
                 'status' => false,
-                'message' => 'Only Admin and Accountant can access dashboard trend'
+                'message' => 'Only Admin, Accountant or Viewer can access dashboard trend'
             ]);
         }
 
@@ -289,7 +289,7 @@ class ReportController extends BaseController
 
     /**
      * GET /reports/expense-category-distribution
-     * Roles: Admin, Accountant
+     * Roles: Admin, Accountant, Viewer
      */
     public function expenseCategoryDistribution()
     {
@@ -300,10 +300,10 @@ class ReportController extends BaseController
             ]);
         }
 
-        if (!$this->checkRole(['Admin', 'Accountant'])) {
+        if (!$this->checkRole(['Admin', 'Accountant', 'Viewer'])) {
             return $this->response->setStatusCode(403)->setJSON([
                 'status' => false,
-                'message' => 'Only Admin and Accountant can access category distribution'
+                'message' => 'Only Admin, Accountant or Viewer can access category distribution'
             ]);
         }
 

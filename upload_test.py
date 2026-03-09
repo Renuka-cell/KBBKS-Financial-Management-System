@@ -1,4 +1,4 @@
-import requests
+import requests 
 
 def main():
     url = 'http://localhost:8080/vendors/create'
