@@ -63,6 +63,8 @@ writable/uploads/*
 writable/debugbar/*
 !writable/debugbar/index.html
 
+public/uploads/
+
 php_errors.log
 
 #-------------------------
@@ -124,3 +126,5 @@ _modules/*
 
 /results/
 /phpunit*.xml
+
+

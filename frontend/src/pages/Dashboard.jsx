@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import http from "../services/http";
 import { useDarkMode } from "../contexts/DarkModeContext";
+import { downloadExpensesExcel, downloadPaymentsExcel } from "../services/report.service";
 
 function Dashboard() {
   const { isDarkMode } = useDarkMode();
@@ -53,6 +54,31 @@ function Dashboard() {
       setCategoryDist(res.data.data || res.data);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleDownload = async (type) => {
+    try {
+      const apiCall =
+        type === "expenses" ? downloadExpensesExcel : downloadPaymentsExcel;
+      const res = await apiCall();
+      const blob = new Blob([res.data], {
+        type: "application/vnd.ms-excel",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download =
+        type === "expenses"
+          ? `expenses-${new Date().toISOString().slice(0, 10)}.csv`
+          : `payments-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download failed", err);
+      alert("Failed to download report. Please try again.");
     }
   };
 
@@ -123,6 +149,46 @@ function Dashboard() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* DOWNLOAD BUTTONS */}
+        <div
+          style={{
+            marginTop: 30,
+            display: "flex",
+            gap: 12,
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <button
+            onClick={() => handleDownload("expenses")}
+            style={{
+              padding: "10px 18px",
+              borderRadius: 8,
+              border: "none",
+              cursor: "pointer",
+              background: "#1976d2",
+              color: "#fff",
+              fontWeight: 600,
+            }}
+          >
+            Download Expense Report (Excel)
+          </button>
+          <button
+            onClick={() => handleDownload("payments")}
+            style={{
+              padding: "10px 18px",
+              borderRadius: 8,
+              border: "none",
+              cursor: "pointer",
+              background: "#388e3c",
+              color: "#fff",
+              fontWeight: 600,
+            }}
+          >
+            Download Payment Report (Excel)
+          </button>
         </div>
 
         {/* MONTHLY TREND */}

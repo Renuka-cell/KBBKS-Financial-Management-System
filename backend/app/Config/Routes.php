@@ -120,4 +120,8 @@ $routes->group('reports', function ($routes) {
     // 🔵 Expense Category Distribution
     $routes->get('expense-category-distribution', 'ReportController::expenseCategoryDistribution');
 
+    // 🔵 NEW: Excel/CSV exports
+    $routes->get('expenses-export', 'ReportController::expensesExport');
+    $routes->get('payments-export', 'ReportController::paymentsExport');
+
 });

@@ -18,3 +18,10 @@ export const getVendorSummary = (vendorId, params = {}) => {
 export const getDashboardSummary = () => http.get("/reports/dashboard-summary");
 export const getDashboardTrend = () => http.get("/reports/dashboard-trend");
 export const getExpenseCategoryDistribution = () => http.get("/reports/expense-category-distribution");
+
+// Excel/CSV exports (Expense & Payment)
+export const downloadExpensesExcel = () =>
+  http.get("/reports/expenses-export", { responseType: "blob" });
+
+export const downloadPaymentsExcel = () =>
+  http.get("/reports/payments-export", { responseType: "blob" });
