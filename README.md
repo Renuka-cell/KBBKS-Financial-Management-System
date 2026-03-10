@@ -45,10 +45,18 @@ vendor management.
 
 # 📂 Project Structure
 
-KBBKS-Financial-Management-System │ ├── kbbks-fms-frontend \# React
-Frontend ├── teammate-backend \# CodeIgniter Backend ├── database.sql \#
-Database setup file ├── README.md └── upload_test.py
+```
+KBBKS-Financial-Management-System
+│
+├── backend       # CodeIgniter Backend
+│
+├── frontend         # React Frontend
+│
+├── README.md
+└── upload_test.py
+```
 
+---
 ------------------------------------------------------------------------
 
 # ✨ Features
