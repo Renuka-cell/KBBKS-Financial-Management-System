@@ -107,7 +107,7 @@ KBBKS-Financial-Management-System
 
 - git clone
 https://github.com/Renuka-cell/KBBKS-Financial-Management-System.git
--cd KBBKS-Financial-Management-System
+- cd KBBKS-Financial-Management-System
 
 ------------------------------------------------------------------------
 
