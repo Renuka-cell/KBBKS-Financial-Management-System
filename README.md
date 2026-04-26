@@ -106,7 +106,7 @@ KBBKS-Financial-Management-System
 ## 1️⃣ Clone the repository
 
 git clone
-https://github.com/Omkar0-0/KBBKS-Financial-Management-System.git cd
+https://github.com/Renuka-cell/KBBKS-Financial-Management-System.git cd
 KBBKS-Financial-Management-System
 
 ------------------------------------------------------------------------
